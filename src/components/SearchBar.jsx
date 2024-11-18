@@ -9,12 +9,12 @@ const SearchBar = React.memo(({ onSearch }) => {
   }, [onSearch]);
 
   return (
-    <form className="flex">
+    <form className="flex justify-center">
       <input
         {...register('searchQuery')}
         type="text"
         placeholder="Search consultants or services..."
-        className="flex-grow p-2 rounded-full text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent"
+        className="w-[80%] p-2 rounded-full text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent"
         onChange={handleChange}
       />
       <button

@@ -39,7 +39,7 @@ h1 {
   }
 
   .flex {
-    flex-direction: column; /* Stack items vertically on small screens */
+   /* flex-direction: column; /* Stack items vertically on small screens */
     align-items: flex-start; /* Align items to the start */
   }
 
@@ -92,4 +92,11 @@ img {
 .consultant-card:hover {
   transform: scale(1.05); /* Slightly enlarge on hover */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+}
+
+.custom-google-button {
+    font-size: 10px !important; /* Force font size */
+    padding: 2px 4px !important; /* Force padding */
+    border-radius: 9999px !important; /* Fully rounded */
+    line-height: 1 !important; /* Adjust line height */
 }

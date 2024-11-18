@@ -2,6 +2,7 @@ import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import SearchBar from './SearchBar';
+import consultantsImage from '../medi/consultants2.png';
 
 function Header({ onSearch }) {
     const handleGoogleLogin = (credentialResponse) => {
@@ -17,24 +18,23 @@ function Header({ onSearch }) {
 
     return (
         <header className="bg-blue-500 text-white p-4 relative">
-            <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-
-                <div className="flex items-center w-full md:w-auto">
-                    <h1 className="text-xl font-bold mb-2 md:mb-0">Consultant App</h1>
-                    <div className="absolute top-2 right-2 ">
-                        <GoogleLogin
-                            onSuccess={handleGoogleLogin}
-                            onFailure={handleFailure}
-                            logo="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                            className="flex items-center bg-white text-gray-800 text-xs px-1 py-0.5 rounded-full shadow hover:bg-gray-200 transition duration-200"
-                        >
-                            Connect with Google
-                        </GoogleLogin>
-                    </div>
-                   
-
+            <div className="container mx-auto flex justify-between items-center">
+                <h1 className="text-xl font-bold">Consultant App</h1>
+                <div className="flex items-center ml-4">
+                    <GoogleLogin
+                    size='small'
+                    width='120px'
+                        onSuccess={handleGoogleLogin}
+                        onFailure={handleFailure}
+                        logo="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                        className="flex items-center bg-white text-gray-800 text-xs px-2 py-1 rounded shadow hover:bg-gray-200 transition duration-200"
+                    >
+                        Google
+                    </GoogleLogin>
                 </div>
-                
+            </div>
+            <div className="flex justify-center mt-6">
+                <img src={consultantsImage} alt="Consultants" className="w-2/2 md:w-3/3" />
             </div>
             <SearchBar onSearch={onSearch} />
         </header>
