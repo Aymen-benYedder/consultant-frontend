@@ -10,7 +10,7 @@ function Header({ onSearch }) {
         alert('Connected with Google!');
     };
 
-    const handleFailure = (error) => {
+    const handleFailure = (error) => { 
         console.error(error);
         alert('Failed to connect with Google.');
     };
