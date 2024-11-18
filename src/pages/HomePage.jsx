@@ -4,6 +4,7 @@ import ConsultantCard from '../components/ConsultantCard';
 import ServiceCard from '../components/ServiceCard';
 import { AppContext } from '../AppContext';
 import Header from '../components/Header';
+import SearchBar from '../components/SearchBar';
 
 function HomePage() {
   const { setConsultants, setServices } = useContext(AppContext);
@@ -40,26 +41,17 @@ function HomePage() {
 
   return (
     <div>
-      <Header onSearch={handleSearch} />
+      <Header />
       <div className="container mx-auto p-6">
-        <div className="mb-4 flex flex-col md:flex-row">
-          <button
-            className={`px-4 py-2 mb-2 md:mb-0 md:mr-2 ${activeTab === 'consultants' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-            onClick={() => setActiveTab('consultants')}
-          >
-            Consultants
-          </button>
-          <button
-            className={`px-4 py-2 ${activeTab === 'services' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-            onClick={() => setActiveTab('services')}
-          >
-            Services
-          </button>
-        </div>
+        <SearchBar 
+          onSearch={handleSearch} 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab}
+        />
         {activeTab === 'consultants' ? (
           <section>
             <h2 className="text-2xl font-bold mb-4 text-gray-800">Consultants</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredConsultants.map(consultant => (
                 <ConsultantCard key={consultant.googleId} consultant={consultant} />
               ))}

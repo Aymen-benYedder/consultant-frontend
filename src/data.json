@@ -48,7 +48,7 @@
             "email": "consultant1@example.com",
             "name": "Consultant One",
             "phoneNumber": "+101010101",
-            "avatar": "https://attic.sh/2zppeu98dsb9s496wbwoi1jeftew",
+            "avatar": "https://eisenberglawgrouppc.com/wp-content/uploads/2023/12/Lawyer-300x300.png",
             "specialization": "Tax Law",
             "ratePerHour": 250,
             "availability": [
@@ -73,7 +73,7 @@
             "email": "consultant2@example.com",
             "name": "Consultant Two",
             "phoneNumber": "+202020202",
-            "avatar": "https://attic.sh/2zppeu98dsb9s496wbwoi1jeftew",
+            "avatar": "https://cdn-ilbpofh.nitrocdn.com/bRXomxzkVDASyryJJdVClUyWAHNVOWCK/assets/images/optimized/rev-9c1e72e/www.rjaffelaw.com/wp-content/uploads/2024/08/Birmingham-Cyber-Crimes-Lawyer-300x300.jpg",
             "specialization": "Contract Law",
             "ratePerHour": 300,
             "availability": [
@@ -97,25 +97,29 @@
             "name": "Tax Advice",
             "description": "Expert advice on tax-related matters.",
             "rate": 250,
-            "consultantId": "consultant001"
+            "consultantId": "consultant001",
+            "consultantName": "Consultant One"
         },
         {
             "name": "Contract Review",
             "description": "Comprehensive contract analysis and recommendations.",
             "rate": 300,
-            "consultantId": "consultant002"
+            "consultantId": "consultant002",
+            "consultantName": "Consultant Two"
         },
         {
             "name": "Business Incorporation",
             "description": "Guidance on incorporating your business.",
             "rate": 200,
-            "consultantId": "consultant001"
+            "consultantId": "consultant001",
+            "consultantName": "Consultant One"
         },
         {
             "name": "Dispute Resolution",
             "description": "Support and advice on resolving disputes.",
             "rate": 350,
-            "consultantId": "consultant002"
+            "consultantId": "consultant002",
+            "consultantName": "Consultant Two"
         }
     ],
     "bookings": [

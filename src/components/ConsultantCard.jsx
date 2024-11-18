@@ -1,52 +1,67 @@
 import React, { useState } from 'react';
-import { Dialog } from '@headlessui/react';
-import { StarIcon } from '@heroicons/react/24/solid';
+import { StarIcon, HeartIcon } from '@heroicons/react/24/solid';
 
 const ConsultantCard = React.memo(({ consultant }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   return (
-    <>
-      <div
-        className="consultant-card p-4 border rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer bg-white"
-        onClick={() => setIsOpen(true)}
-      >
+    <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+      {/* Image Section */}
+      <div className="relative">
         <img
           src={consultant.avatar}
           alt={consultant.name}
-          className="w-24 h-24 rounded-full mx-auto mb-2"
+          className="h-80 w-72 object-cover rounded-t-xl"
         />
-        <h3 className="text-xl font-semibold text-center">{consultant.name}</h3>
-        <p className="text-center text-gray-600">{consultant.specialization}</p>
-        <div className="flex justify-center items-center mt-2">
-          <StarIcon className="h-5 w-5 text-yellow-500" />
-          <span className="ml-1">{consultant.rating} ({consultant.reviews} reviews)</span>
+        <div className="absolute top-4 right-4">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsFavorite(!isFavorite);
+            }}
+            className="bg-white/90 p-2 rounded-full hover:bg-white transition-colors"
+          >
+            <HeartIcon className={`h-5 w-5 ${isFavorite ? 'text-red-500' : 'text-gray-400'}`} />
+          </button>
         </div>
-        <p className="text-center text-gray-600">Rate: ${consultant.ratePerHour}</p>
       </div>
 
-      <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className="fixed z-10 inset-0 overflow-y-auto"
-      >
-        <div className="flex items-center justify-center min-h-screen">
-          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-          <div className="bg-white p-6 rounded-lg shadow-lg z-20">
-            <Dialog.Title className="text-2xl font-bold">{consultant.name}</Dialog.Title>
-            <Dialog.Description className="mt-2">{consultant.specialization}</Dialog.Description>
-            <p className="mt-4">Phone: {consultant.phoneNumber}</p>
-            <p>Email: {consultant.email}</p>
-            <button
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => setIsOpen(false)}
+      {/* Content Section */}
+      <div className="px-4 py-3 w-72">
+        {/* Specialties Tags */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {consultant.specialties?.map((specialty, index) => (
+            <span
+              key={index}
+              className={`text-xs px-2 py-1 rounded-full ${
+                index % 2 === 0 
+                  ? 'bg-cyan-100 text-cyan-600' 
+                  : 'bg-purple-100 text-purple-600'
+              }`}
             >
-              Close
-            </button>
-          </div>
+              {specialty}
+            </span>
+          ))}
         </div>
-      </Dialog>
-    </>
+
+        {/* Doctor Info */}
+        <h3 className="text-lg font-bold text-gray-900 truncate">{consultant.name}</h3>
+        <p className="text-gray-500 text-sm mb-3">{consultant.specialization}</p>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <StarIcon className="h-4 w-4 text-yellow-400" />
+            <span className="ml-1 text-sm font-semibold">{consultant.rating}</span>
+            <span className="ml-1 text-xs text-gray-500">({consultant.reviews} reviews)</span>
+          </div>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition-colors"
+          >
+            Book
+          </button>
+        </div>
+      </div>
+    </div>
   );
 });
 
