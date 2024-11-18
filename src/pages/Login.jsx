@@ -1,45 +1,59 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { AppContext } from '../AppContext';
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { setUser } = useContext(AppContext);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Simulate login logic
-    if (email === 'client1@example.com' && password === 'password') {
-      alert('Login successful!');
-      // Redirect to HomePage or set user state
-    } else {
-      setError('Invalid email or password');
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email('Invalid email address')
+        .required('Required'),
+      password: Yup.string()
+        .min(6, 'Password must be at least 6 characters')
+        .required('Required'),
+    }),
+    onSubmit: (values) => {
+      if (values.email === 'client1@example.com' && values.password === 'password') {
+        setUser({ email: values.email });
+        alert('Login successful!');
+      } else {
+        alert('Invalid email or password');
+      }
+    },
+  });
 
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">Login</h1>
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      <form onSubmit={handleLogin} className="max-w-md mx-auto">
+      <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto">
         <div className="mb-4">
           <label className="block text-gray-700">Email</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...formik.getFieldProps('email')}
             className="w-full p-2 border border-gray-300 rounded"
-            required
           />
+          {formik.touched.email && formik.errors.email ? (
+            <p className="text-red-500">{formik.errors.email}</p>
+          ) : null}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Password</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...formik.getFieldProps('password')}
             className="w-full p-2 border border-gray-300 rounded"
-            required
           />
+          {formik.touched.password && formik.errors.password ? (
+            <p className="text-red-500">{formik.errors.password}</p>
+          ) : null}
         </div>
         <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
           Login

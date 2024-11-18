@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import data from '../data.json';
-import SearchBar from '../components/SearchBar';
 import ConsultantCard from '../components/ConsultantCard';
 import ServiceCard from '../components/ServiceCard';
-import { Link } from 'react-router-dom';
+import { AppContext } from '../AppContext';
+import Header from '../components/Header';
 
 function HomePage() {
-  const [consultants, setConsultants] = useState([]);
-  const [services, setServices] = useState([]);
-  const [searchResults, setSearchResults] = useState({
-    consultants: [],
-    services: []
-  });
+  const { setConsultants, setServices } = useContext(AppContext);
+  const [consultants, setLocalConsultants] = useState([]);
+  const [services, setLocalServices] = useState([]);
+  const [filteredConsultants, setFilteredConsultants] = useState([]);
+  const [filteredServices, setFilteredServices] = useState([]);
+  const [activeTab, setActiveTab] = useState('consultants');
 
   useEffect(() => {
-    setConsultants(data.users.filter(user => user.role === 'consultant'));
-    setServices(data.services);
-    setSearchResults({
-      consultants: data.users.filter(user => user.role === 'consultant'),
-      services: data.services
-    });
-  }, []);
+    const fetchedConsultants = data.users.filter(user => user.role === 'consultant');
+    const fetchedServices = data.services;
+
+    setConsultants(fetchedConsultants);
+    setServices(fetchedServices);
+    setLocalConsultants(fetchedConsultants);
+    setLocalServices(fetchedServices);
+    setFilteredConsultants(fetchedConsultants);
+    setFilteredServices(fetchedServices);
+  }, [setConsultants, setServices]);
 
   const handleSearch = (query) => {
     const lowerCaseQuery = query.toLowerCase();
@@ -30,51 +33,48 @@ function HomePage() {
     const filteredServices = services.filter(service =>
       service.name.toLowerCase().includes(lowerCaseQuery)
     );
-    setSearchResults({
-      consultants: filteredConsultants,
-      services: filteredServices
-    });
+
+    setFilteredConsultants(filteredConsultants);
+    setFilteredServices(filteredServices);
   };
 
   return (
-    <div className="container mx-auto p-6">
-      {/* Search Section */}
-      <section className="mb-10">
-        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">Find Your Consultant</h1>
-        <SearchBar onSearch={handleSearch} />
-      </section>
-
-      {/* Consultants Section */}
-      <section className="mt-10">
-        <h2 className="text-3xl font-semibold text-gray-700 mb-4">Consultants</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {searchResults.consultants.length > 0 ? (
-            searchResults.consultants.map(consultant => (
-              <ConsultantCard key={consultant.googleId} consultant={consultant} />
-            ))
-          ) : (
-            <p className="text-center text-gray-500">No consultants found.</p> 
-          )}
+    <div>
+      <Header onSearch={handleSearch} />
+      <div className="container mx-auto p-6">
+        <div className="mb-4 flex flex-col md:flex-row">
+          <button
+            className={`px-4 py-2 mb-2 md:mb-0 md:mr-2 ${activeTab === 'consultants' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            onClick={() => setActiveTab('consultants')}
+          >
+            Consultants
+          </button>
+          <button
+            className={`px-4 py-2 ${activeTab === 'services' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            onClick={() => setActiveTab('services')}
+          >
+            Services
+          </button>
         </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="mt-10">
-        <h2 className="text-3xl font-semibold text-gray-700 mb-4">Services</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {searchResults.services.length > 0 ? (
-            searchResults.services.map(service => (
-              <ServiceCard key={service.name} service={service} />
-            ))
-          ) : (
-            <p className="text-center text-gray-500">No services found.</p>
-          )}
-        </div>
-      </section>
-
-      <div className="text-center mt-6">
-        <Link to="/login" className="text-blue-500 hover:underline">Login</Link> | 
-        <Link to="/register" className="text-blue-500 hover:underline">Register</Link>
+        {activeTab === 'consultants' ? (
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">Consultants</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredConsultants.map(consultant => (
+                <ConsultantCard key={consultant.googleId} consultant={consultant} />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <section className="mt-10">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredServices.map(service => (
+                <ServiceCard key={service.name} service={service} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
