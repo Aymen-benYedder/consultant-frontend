@@ -103,8 +103,8 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                       onClick={() => setSelectedTime(time)}
                       className={`p-2 text-sm rounded-lg border ${
                         selectedTime === time
-                          ? 'bg-blue-500 text-white border-blue-500'
-                          : 'hover:border-blue-500'
+                          ? 'bg-sky-950 text-white border-sky-950'
+                          : 'hover:border-sky-950'
                       }`}
                     >
                       {time}
@@ -122,7 +122,7 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                 </button>
                 <button
                   onClick={handleBookAppointment}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  className="px-4 py-2 bg-sky-950 text-white rounded-lg hover:bg-sky-950"
                 >
                   Confirm Booking
                 </button>

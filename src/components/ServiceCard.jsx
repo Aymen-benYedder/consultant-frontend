@@ -8,7 +8,7 @@ function ServiceCard({ service }) {
       <p className="text-gray-800 font-bold mb-2">Rate: ${service.rate}</p>
       <div className="border-t pt-2">
         <p className="text-sm text-gray-600">Offered by:</p>
-        <p className="text-md font-semibold text-blue-600">{service.consultantName}</p>
+        <p className="text-md font-semibold text-sky-950 ">{service.consultantName}</p>
       </div>
     </div>
   );

@@ -41,17 +41,18 @@ function HomePage() {
 
   return (
     <div>
-      <Header />
-      <div className="container mx-auto p-6">
+      <Header onSearch={handleSearch} setActiveTab={setActiveTab} activeTab={activeTab} />
+      <div className=" w-full ">
         <SearchBar 
           onSearch={handleSearch} 
           activeTab={activeTab} 
           setActiveTab={setActiveTab}
         />
         {activeTab === 'consultants' ? (
-          <section>
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Consultants</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <section >
+            <h2 className=" mx-8 text-2xl font-bold mb-4 text-gray-800">Consultants</h2>
+            <div class="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+
               {filteredConsultants.map(consultant => (
                 <ConsultantCard key={consultant.googleId} consultant={consultant} />
               ))}
