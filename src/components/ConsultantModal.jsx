@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 import { CalendarDaysIcon, ClockIcon, MapPinIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import data from '../data.json'; // Import your data
 
 const ConsultantModal = ({ isOpen, onClose, consultant }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedService, setSelectedService] = useState('');
+  const [services, setServices] = useState([]);
 
   const timeSlots = [
     '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'
   ];
+
+  useEffect(() => {
+    // Fetch services for the selected consultant
+    const consultantServices = data.services.filter(service => service.consultantId === consultant.googleId);
+    setServices(consultantServices);
+  }, [consultant]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -18,15 +27,16 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
   };
 
   const handleBookAppointment = () => {
-    if (!selectedTime) {
-      alert('Please select a time slot');
+    if (!selectedTime || !selectedService) {
+      alert('Please select a time slot and a service');
       return;
     }
     // Handle booking logic here
     console.log('Booking appointment for:', {
       consultant,
       date: selectedDate,
-      time: selectedTime
+      time: selectedTime,
+      service: selectedService
     });
   };
 
@@ -109,6 +119,31 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                     >
                       {time}
                     </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Service Selection */}
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold">Select a Service</h3>
+                <div className="grid w-full grid-cols-4 gap-2 rounded-xl bg-gray-200 p-2">
+                  {services.map(service => (
+                    <div key={service.id} className="flex flex-col items-center">
+                      <input
+                        type="radio"
+                        id={service.id}
+                        value={service.id}
+                        className="peer hidden"
+                        checked={selectedService === service.id}
+                        onChange={() => setSelectedService(service.id)}
+                      />
+                      <label
+                        htmlFor={service.id}
+                        className="block cursor-pointer select-none rounded-xl p-2 text-center whitespace-nowrap peer-checked:bg-sky-950 peer-checked:font-bold peer-checked:text-white"
+                      >
+                        {service.name}
+                      </label>
+                    </div>
                   ))}
                 </div>
               </div>

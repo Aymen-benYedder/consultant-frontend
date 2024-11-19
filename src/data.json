@@ -163,28 +163,29 @@
         
     ],
     "services": [
-        {
+        {   
+            "id": "service001",
             "name": "Tax Advice",
             "description": "Expert advice on tax-related matters.",
             "rate": 250,
             "consultantId": "consultant001",
             "consultantName": "Consultant One"
         },
-        {
+        {   "id": "service002",
             "name": "Contract Review",
             "description": "Comprehensive contract analysis and recommendations.",
             "rate": 300,
             "consultantId": "consultant002",
             "consultantName": "Consultant Two"
         },
-        {
+        {   "id": "service003",
             "name": "Business Incorporation",
             "description": "Guidance on incorporating your business.",
             "rate": 200,
             "consultantId": "consultant001",
             "consultantName": "Consultant One"
         },
-        {
+        {   "id": "service004",
             "name": "Dispute Resolution",
             "description": "Support and advice on resolving disputes.",
             "rate": 350,
