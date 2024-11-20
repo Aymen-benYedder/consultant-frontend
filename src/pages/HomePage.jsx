@@ -51,7 +51,7 @@ function HomePage() {
         {activeTab === 'consultants' ? (
           <section >
             <h2 className=" mx-8 text-2xl font-bold mb-4 text-gray-800">Consultants</h2>
-            <div class="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+            <div class="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
 
               {filteredConsultants.map(consultant => (
                 <ConsultantCard key={consultant.googleId} consultant={consultant} />

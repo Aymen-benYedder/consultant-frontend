@@ -39,7 +39,7 @@ h1 {
 
   .flex {
    /* flex-direction: column; /* Stack items vertically on small screens */
-    align-items: flex-start; /* Align items to the start */
+   /* align-items: flex-start; /* Align items to the start */
   }
 
   .flex > div {
