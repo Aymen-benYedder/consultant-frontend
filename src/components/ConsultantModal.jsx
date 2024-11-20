@@ -7,6 +7,10 @@ import 'react-calendar/dist/Calendar.css';
 const ConsultantModal = ({ isOpen, onClose, consultant }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
+  const [documents, setDocuments] = useState(['']); // Array to hold document inputs
+  const [note, setNote] = useState(''); // State for the note
+  const [isDocumentUploadOpen, setIsDocumentUploadOpen] = useState(false); // Accordion state for Document Upload
+  const [isNoteSectionOpen, setIsNoteSectionOpen] = useState(false); // Accordion state for Note Section
 
   const timeSlots = [
     '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'
@@ -26,8 +30,20 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
     console.log('Booking appointment for:', {
       consultant,
       date: selectedDate,
-      time: selectedTime
+      time: selectedTime,
+      documents,
+      note // Include the note in the booking request
     });
+  };
+
+  const handleDocumentChange = (index, event) => {
+    const newDocuments = [...documents];
+    newDocuments[index] = event.target.files[0]; // Store the uploaded file
+    setDocuments(newDocuments);
+  };
+
+  const addDocumentInput = () => {
+    setDocuments([...documents, '']); // Add a new empty input for document upload
   };
 
   return (
@@ -110,6 +126,87 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                       {time}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              {/* Document Upload Section */}
+              <div className="mt-6 max-w-screen-md mx-auto">
+                <div id="accordion-flush" data-accordion="collapse">
+                  <h3 id="accordion-flush-heading-1">
+                    <button
+                      type="button"
+                      className={`flex items-center justify-between w-full py-5 px-4 font-medium text-left border-b border-gray-200 ${isDocumentUploadOpen ? 'bg-white text-gray-900' : 'text-gray-500'}`}
+                      onClick={() => setIsDocumentUploadOpen(!isDocumentUploadOpen)}
+                      aria-expanded={isDocumentUploadOpen}
+                      aria-controls="accordion-flush-body-1"
+                    >
+                      <span className="flex text-lg font-semibold">Document Upload Section</span>
+                      <svg className={`w-6 h-6 shrink-0 transform ${isDocumentUploadOpen ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                      </svg>
+                    </button>
+                  </h3>
+                  {isDocumentUploadOpen && (
+                    <div id="accordion-flush-body-1" className="py-5 border-b border-gray-200">
+                      <h4 className="font-medium mb-2">Upload Documents</h4>
+                      {documents.map((doc, index) => (
+                        <div key={index} className="rounded-md border border-indigo-500 bg-gray-50 p-4 shadow-md mb-2">
+                          <label htmlFor={`upload-${index}`} className="flex flex-col items-center gap-2 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 fill-white stroke-indigo-500" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span className="text-gray-600 font-medium">Upload file</span>
+                          </label>
+                          <input
+                            id={`upload-${index}`}
+                            type="file"
+                            accept=".doc,.docx,.pdf,.jpeg,.jpg"
+                            onChange={(event) => handleDocumentChange(index, event)}
+                            className="hidden"
+                          />
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={addDocumentInput}
+                        className="mt-2 text-blue-500 hover:underline"
+                      >
+                        Add Another Document
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Note Section */}
+              <div className="mt-6 max-w-screen-md mx-auto">
+                <div id="accordion-flush" data-accordion="collapse">
+                  <h3 id="accordion-flush-heading-2">
+                    <button
+                      type="button"
+                      className={`flex items-center justify-between w-full py-5 px-4 font-medium text-left border-b border-gray-200 ${isNoteSectionOpen ? 'bg-white text-gray-900' : 'text-gray-500'}`}
+                      onClick={() => setIsNoteSectionOpen(!isNoteSectionOpen)}
+                      aria-expanded={isNoteSectionOpen}
+                      aria-controls="accordion-flush-body-2"
+                    >
+                      <span className="flex text-lg font-semibold">Note Section</span>
+                      <svg className={`w-6 h-6 shrink-0 transform ${isNoteSectionOpen ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                      </svg>
+                    </button>
+                  </h3>
+                  {isNoteSectionOpen && (
+                    <div id="accordion-flush-body-2" className="py-5 border-b border-gray-200">
+                      <h4 className="font-medium mb-2">Additional Notes</h4>
+                      <textarea
+                        value={note}
+                        onChange={(e) => setNote(e.target.value)}
+                        rows="3"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        placeholder="Write any additional notes here..."
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
