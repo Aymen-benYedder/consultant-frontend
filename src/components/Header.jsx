@@ -35,7 +35,7 @@ function Header() {
                         className="w-[60px] h-[60px] bg-cover"
                         style={{ backgroundImage: `url(${logoPath})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat' }}
                     ></div>
-                    <h1 className="text-xl font-bold text-[#d6b884]  md:mt-0">lavocato</h1>
+                    <h1 className="text-xl font-bold text-[#d6b884]  md:mt-0">Lavocato</h1>
                 </div>
                 <div className="relative">
                     {!isConnected ? (
@@ -50,8 +50,8 @@ function Header() {
                             >
                                 Google
                             </GoogleLogin>
-                            <button 
-                                onClick={simulateClientSession} 
+                            <button
+                                onClick={simulateClientSession}
                                 className="ml-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200"
                             >
                                 Simulate Client Session
@@ -59,17 +59,17 @@ function Header() {
                         </>
                     ) : (
                         <div className="relative">
-                            <button 
-                                id="dropdownAvatarNameButton" 
-                                onClick={toggleDropdown} 
-                                className="flex justify-end items-center text-m font-medium text-[#d6b884] rounded-full hover:text-white-100" 
+                            <button
+                                id="dropdownAvatarNameButton"
+                                onClick={toggleDropdown}
+                                className="flex justify-end items-center text-m font-medium text-[#d6b884] rounded-full hover:text-white-100"
                                 type="button"
                             >
                                 <span className="sr-only">Open user menu</span>
                                 <img className="w-10 h-10 me-2 rounded-full" src="https://toplawyerscanada.ca/wp-content/uploads/Criminal-Defence-Lawyer-Toronto-Richard-Posner.jpg" alt="user photo" />
                                 Bonnie Green
                                 <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                                 </svg>
                             </button>
                             {/* Dropdown menu */}
