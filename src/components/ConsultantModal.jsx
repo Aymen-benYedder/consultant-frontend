@@ -51,7 +51,7 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-full max-w-2xl bg-white rounded-xl shadow-xl">
+        <Dialog.Panel className="w-full max-w-2xl bg-white rounded-xl shadow-xl overflow-y-auto max-h-[90vh]">
           <div className="flex flex-col md:flex-row">
             {/* Consultant Info Section */}
             <div className="p-6 md:w-1/2 border-r border-gray-200">
@@ -148,7 +148,6 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                   </h3>
                   {isDocumentUploadOpen && (
                     <div id="accordion-flush-body-1" className="py-5 border-b border-gray-200">
-                      
                       {documents.map((doc, index) => (
                         <div key={index} className="rounded-md border border-indigo-500 bg-gray-50 p-4 shadow-md mb-2">
                           <label htmlFor={`upload-${index}`} className="flex flex-col items-center gap-2 cursor-pointer">
@@ -197,7 +196,6 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                   </h3>
                   {isNoteSectionOpen && (
                     <div id="accordion-flush-body-2" className="py-5 border-b border-gray-200">
-                      
                       <textarea
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
