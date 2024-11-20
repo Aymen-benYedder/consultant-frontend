@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import data from '../data.json';
-import ConsultantCard from '../components/ConsultantCard';
-import ServiceCard from '../components/ServiceCard';
+import ConsultantCard from '../components/Cards/consultant-card/ConsultantCard';
+import ServiceCard from '../components/Cards/service-card/ServiceCard';
 import { AppContext } from '../AppContext';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
