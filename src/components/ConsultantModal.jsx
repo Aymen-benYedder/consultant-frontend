@@ -140,7 +140,7 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                       aria-expanded={isDocumentUploadOpen}
                       aria-controls="accordion-flush-body-1"
                     >
-                      <span className="flex text-lg font-semibold">Document Upload Section</span>
+                      <span className="flex text-lg font-semibold">Upload documents</span>
                       <svg className={`w-6 h-6 shrink-0 transform ${isDocumentUploadOpen ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
                       </svg>
@@ -148,7 +148,7 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                   </h3>
                   {isDocumentUploadOpen && (
                     <div id="accordion-flush-body-1" className="py-5 border-b border-gray-200">
-                      <h4 className="font-medium mb-2">Upload Documents</h4>
+                      
                       {documents.map((doc, index) => (
                         <div key={index} className="rounded-md border border-indigo-500 bg-gray-50 p-4 shadow-md mb-2">
                           <label htmlFor={`upload-${index}`} className="flex flex-col items-center gap-2 cursor-pointer">
@@ -189,7 +189,7 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                       aria-expanded={isNoteSectionOpen}
                       aria-controls="accordion-flush-body-2"
                     >
-                      <span className="flex text-lg font-semibold">Note Section</span>
+                      <span className="flex text-lg font-semibold">Add a note</span>
                       <svg className={`w-6 h-6 shrink-0 transform ${isNoteSectionOpen ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
                       </svg>
@@ -197,7 +197,7 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
                   </h3>
                   {isNoteSectionOpen && (
                     <div id="accordion-flush-body-2" className="py-5 border-b border-gray-200">
-                      <h4 className="font-medium mb-2">Additional Notes</h4>
+                      
                       <textarea
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
