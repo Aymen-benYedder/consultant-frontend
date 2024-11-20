@@ -11,7 +11,7 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 h1, h2 {
@@ -30,7 +30,7 @@ h1 {
 
 @media (max-width: 768px) {
   header {
-    padding: 15px; /* Adjust padding for smaller screens */
+    padding: 0px; /* Adjust padding for smaller screens */
   }
 
   h1 {

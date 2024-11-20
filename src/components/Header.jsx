@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import logoPath from '../medi/logo.png';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 function Header() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isConnected, setIsConnected] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleGoogleLogin = (credentialResponse) => {
         const userObject = jwtDecode(credentialResponse.credential);
@@ -18,103 +19,88 @@ function Header() {
         alert('Failed to connect with Google.');
     };
 
-    const navigationItems = [
-        { name: 'Home', href: '#' },
-        { name: 'Consultants', href: '#' },
-        { name: 'Services', href: '#' },
-        { name: 'About', href: '#' },
-    ];
+    const simulateClientSession = () => {
+        setIsConnected(true);
+        alert('Client session connected successfully!');
+    };
 
-    // Desktop and Mobile Login Button Component
-    const LoginButton = ({ isMobile = false }) => (
-        <div className="relative">
-            <GoogleLogin
-                onSuccess={handleGoogleLogin}
-                onFailure={handleFailure}
-                render={renderProps => (
-                    <button
-                        onClick={renderProps.onClick}
-                        disabled={renderProps.disabled}
-                        className={`${isMobile ? 'w-full' : ''} bg-sky-950 border border-[#d6b884] text-white px-6 py-2 rounded-full text-sm hover:bg-sky-900 transition-colors flex items-center justify-center space-x-2`}
-                    >
-                        <img 
-                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
-                            alt="Google Logo" 
-                            className="w-4 h-4"
-                        />
-                        <span>Sign in</span>
-                    </button>
-                )}
-            />
-        </div>
-    );
+    const toggleDropdown = () => {
+        setDropdownOpen(!dropdownOpen);
+    };
 
     return (
         <header className="bg-sky-950 text-white sticky top-0 z-50">
-            <nav className="container mx-auto px-4">
-                <div className="flex items-center justify-between h-24">
-                    {/* Logo and Brand Name */}
-                    <div className="flex items-center">
-                        <div className="flex flex-col items-center">
-                            <div
-                                className="w-20 h-20 bg-contain bg-no-repeat bg-center"
-                                style={{ backgroundImage: `url(${logoPath})` }}
-                            />
-                            <h1 className="text-2xl font-bold text-[#d6b884] mt-1">Lavocato</h1>
-                        </div>
-                    </div>
-
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        {navigationItems.map((item) => (
-                            <a
-                                key={item.name}
-                                href={item.href}
-                                className="text-gray-300 hover:text-white transition-colors"
-                            >
-                                {item.name}
-                            </a>
-                        ))}
-                    </div>
-
-                    {/* Desktop Login */}
-                    <div className="hidden md:block">
-                        <LoginButton />
-                    </div>
-
-                    {/* Mobile menu button */}
-                    <button
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="md:hidden p-2 rounded-md hover:bg-sky-900"
-                    >
-                        {isMenuOpen ? (
-                            <XMarkIcon className="h-6 w-6" />
-                        ) : (
-                            <Bars3Icon className="h-6 w-6" />
-                        )}
-                    </button>
+            <div className="flex justify-between items-center px-4 py-4 flex-wrap">
+                <div className="flex items-center space-x-4">
+                    <div
+                        className="w-[60px] h-[60px] bg-cover bg-left"
+                        style={{ backgroundImage: `url(${logoPath})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat' }}
+                    ></div>
+                    <h1 className="text-xl font-bold text-left text-[#d6b884]">lavocato</h1>
                 </div>
+                <div className="flex items-center ml-auto mt-2">
+                    {!isConnected ? (
+                        <>
+                            <GoogleLogin
+                                size='medium'
+                                width='120px'
+                                onSuccess={handleGoogleLogin}
+                                onFailure={handleFailure}
+                                logo="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                                className="flex items-center bg-white text-gray-800 text-xs px-2 py-1 rounded shadow hover:bg-gray-200 transition duration-200"
+                            >
+                                Google
+                            </GoogleLogin>
+                            <button 
+                                onClick={simulateClientSession} 
+                                className="ml-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200"
+                            >
+                                Simulate Client Session
+                            </button>
+                        </>
+                    ) : (
+                        <div className="relative">
+                            <button 
+                                id="dropdownAvatarNameButton" 
+                                onClick={toggleDropdown} 
+                                className="flex items-center text-sm font-medium text-[#d6b884] rounded-full hover:text-white-100 " 
+                                type="button"
+                            >
+                                <span className="sr-only ">Open user menu</span>
+                                <img className="w-8 h-8 me-2 rounded-full" src="https://toplawyerscanada.ca/wp-content/uploads/Criminal-Defence-Lawyer-Toronto-Richard-Posner.jpg" alt="user photo" />
+                                Bonnie Green
+                                <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                                </svg>
+                            </button>
 
-                {/* Mobile Navigation */}
-                {isMenuOpen && (
-                    <div className="md:hidden py-4">
-                        <div className="flex flex-col space-y-4">
-                            {navigationItems.map((item) => (
-                                <a
-                                    key={item.name}
-                                    href={item.href}
-                                    className="text-gray-300 hover:text-white transition-colors px-4 py-2 rounded-md hover:bg-sky-900"
-                                >
-                                    {item.name}
-                                </a>
-                            ))}
-                            <div className="px-4 pt-2">
-                                <LoginButton isMobile />
-                            </div>
+                            {/* Dropdown menu */}
+                            {dropdownOpen && (
+                                <div className="absolute right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                                    <div className="px-4 py-3 text-sm text-gray-900">
+                                        <div className="font-medium">Pro User</div>
+                                        
+                                    </div>
+                                    <ul className="py-2 text-sm text-gray-700">
+                                        <li>
+                                            <a href="#" className="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" className="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" className="block px-4 py-2 hover:bg-gray-100">Earnings</a>
+                                        </li>
+                                    </ul>
+                                    <div className="py-2">
+                                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                    </div>
-                )}
-            </nav>
+                    )}
+                </div>
+            </div>
         </header>
     );
 }
