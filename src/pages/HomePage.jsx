@@ -42,26 +42,25 @@ function HomePage() {
   return (
     <div>
       <Header onSearch={handleSearch} setActiveTab={setActiveTab} activeTab={activeTab} />
-      <div className=" w-full ">
+      <div className="w-full">
         <SearchBar 
           onSearch={handleSearch} 
           activeTab={activeTab} 
           setActiveTab={setActiveTab}
         />
         {activeTab === 'consultants' ? (
-          <section >
-            <h2 className=" mx-8 text-2xl font-bold mb-4 text-gray-800">Consultants</h2>
-            <div class="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 justify-items-center">
-
+          <section>
+            <h2 className="mx-8 text-2xl font-bold mb-4 text-gray-800">Consultants</h2>
+            <div className="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 justify-items-center">
               {filteredConsultants.map(consultant => (
                 <ConsultantCard key={consultant.googleId} consultant={consultant} />
               ))}
             </div>
           </section>
         ) : (
-          <section >
+          <section>
             <h2 className="mx-8 text-2xl font-bold mb-4 text-gray-800">Services</h2>
-            <div class="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 justify-items-center">
+            <div className="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 justify-items-center">
               {filteredServices.map(service => (
                 <ServiceCard key={service.name} service={service} />
               ))}
@@ -73,4 +72,4 @@ function HomePage() {
   );
 }
 
-export default HomePage; 
+export default HomePage;

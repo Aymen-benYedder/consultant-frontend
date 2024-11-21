@@ -1,17 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+import { AppContext } from '../../../AppContext';
 import ConsultantInfo from './ConsultantInfo';
 import BookingCalendar from './BookingCalendar';
 import DocumentUpload from './DocumentUpload';
 import NoteSection from './NoteSection';
 
 const ConsultantModal = ({ isOpen, onClose, consultant }) => {
+  const { user, login } = useContext(AppContext);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [showFallbackButton, setShowFallbackButton] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
   const [documents, setDocuments] = useState(['']);
   const [note, setNote] = useState('');
   const [isDocumentUploadOpen, setIsDocumentUploadOpen] = useState(false);
   const [isNoteSectionOpen, setIsNoteSectionOpen] = useState(false);
+
+  useEffect(() => {
+    if (showLoginPrompt && !user && window.google?.accounts?.id) {
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || 
+            notification.isSkippedMoment() || 
+            notification.isDismissedMoment()) {
+          setShowFallbackButton(true);
+        }
+      });
+    }
+  }, [showLoginPrompt, user]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -23,13 +41,32 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
       alert('Please select a time slot');
       return;
     }
+
+    if (!user) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
+    // Proceed with booking
     console.log('Booking appointment for:', {
       consultant,
       date: selectedDate,
       time: selectedTime,
       documents,
-      note
+      note,
+      user
     });
+  };
+
+  const handleLoginSuccess = (credentialResponse) => {
+    try {
+      const userData = jwtDecode(credentialResponse.credential);
+      login(userData);
+      setShowLoginPrompt(false);
+      setShowFallbackButton(false);
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   const handleDocumentChange = (index, event) => {
@@ -48,50 +85,71 @@ const ConsultantModal = ({ isOpen, onClose, consultant }) => {
       
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="w-full max-w-2xl bg-white rounded-xl shadow-xl overflow-y-auto max-h-[90vh]">
-          <div className="flex flex-col md:flex-row">
-            <ConsultantInfo consultant={consultant} />
-            
-            <div className="p-6 md:w-1/2">
-              <h3 className="text-lg font-semibold mb-4">Book Appointment</h3>
-              
-              <BookingCalendar
-                selectedDate={selectedDate}
-                onDateChange={handleDateChange}
-                selectedTime={selectedTime}
-                onTimeChange={setSelectedTime}
-              />
-
-              <DocumentUpload
-                isOpen={isDocumentUploadOpen}
-                onToggle={() => setIsDocumentUploadOpen(!isDocumentUploadOpen)}
-                documents={documents}
-                onDocumentChange={handleDocumentChange}
-                onAddDocument={addDocumentInput}
-              />
-
-              <NoteSection
-                isOpen={isNoteSectionOpen}
-                onToggle={() => setIsNoteSectionOpen(!isNoteSectionOpen)}
-                note={note}
-                onNoteChange={setNote}
-              />
-
-              <div className="mt-6 flex justify-end space-x-3">
+          {showLoginPrompt ? (
+            <div className="p-6 text-center">
+              <h3 className="text-xl font-semibold mb-4">Please log in to book an appointment</h3>
+              <p className="text-gray-600 mb-6">Sign in with your Google account to continue booking your consultation.</p>
+              <div className="flex flex-col items-center gap-4">
+                {showFallbackButton && (
+                  <GoogleLogin
+                    onSuccess={handleLoginSuccess}
+                    onError={() => console.error('Login Failed')}
+                    useOneTap={false}
+                    theme="filled_blue"
+                    size="large"
+                    text="signin_with"
+                    shape="rectangular"
+                    width={250}
+                  />
+                )}
                 <button
-                  onClick={onClose}
-                  className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                  onClick={() => {
+                    setShowLoginPrompt(false);
+                    setShowFallbackButton(false);
+                  }}
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800"
                 >
                   Cancel
                 </button>
-                <button
-                  onClick={handleBookAppointment}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                >
-                  Confirm Booking
-                </button>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex flex-col md:flex-row">
+              <div className="md:w-1/2 p-6 border-r border-gray-200">
+                <ConsultantInfo consultant={consultant} />
+                <BookingCalendar
+                  selectedDate={selectedDate}
+                  onDateChange={handleDateChange}
+                  selectedTime={selectedTime}
+                  onTimeSelect={setSelectedTime}
+                />
+              </div>
+
+              <div className="md:w-1/2 p-6">
+                <DocumentUpload
+                  isOpen={isDocumentUploadOpen}
+                  setIsOpen={setIsDocumentUploadOpen}
+                  documents={documents}
+                  onDocumentChange={handleDocumentChange}
+                  onAddDocument={addDocumentInput}
+                />
+                <NoteSection
+                  isOpen={isNoteSectionOpen}
+                  setIsOpen={setIsNoteSectionOpen}
+                  note={note}
+                  setNote={setNote}
+                />
+                <div className="mt-6">
+                  <button
+                    onClick={handleBookAppointment}
+                    className="w-full bg-sky-950 text-white py-2 px-4 rounded-lg hover:bg-sky-900 transition-colors"
+                  >
+                    {user ? 'Book Appointment' : 'Sign in to Book'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </Dialog.Panel>
       </div>
     </Dialog>

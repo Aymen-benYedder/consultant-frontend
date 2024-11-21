@@ -1,8 +1,9 @@
 import React from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import PropTypes from 'prop-types';
 
-const BookingCalendar = ({ selectedDate, onDateChange, selectedTime, onTimeChange }) => {
+const BookingCalendar = ({ selectedDate, onDateChange, selectedTime, onTimeSelect }) => {
   const timeSlots = [
     '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'
   ];
@@ -24,7 +25,7 @@ const BookingCalendar = ({ selectedDate, onDateChange, selectedTime, onTimeChang
           {timeSlots.map((time) => (
             <button
               key={time}
-              onClick={() => onTimeChange(time)}
+              onClick={() => onTimeSelect(time)}
               className={`p-2 text-sm rounded-lg border ${
                 selectedTime === time
                   ? 'bg-blue-500 text-white border-blue-500'
@@ -38,6 +39,13 @@ const BookingCalendar = ({ selectedDate, onDateChange, selectedTime, onTimeChang
       </div>
     </div>
   );
+};
+
+BookingCalendar.propTypes = {
+  selectedDate: PropTypes.instanceOf(Date).isRequired,
+  onDateChange: PropTypes.func.isRequired,
+  selectedTime: PropTypes.string,
+  onTimeSelect: PropTypes.func.isRequired
 };
 
 export default BookingCalendar;
